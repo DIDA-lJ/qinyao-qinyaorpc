@@ -1,7 +1,7 @@
 1、服务调用方 
 发送报文 writeAndFlush(object)  请求
 此object应该是什么？ 应该包含一些什么样的信息？
-YrpcRequest  （
+QinYaorpcRequest  （
 1、请求id  （long） 
 2、压缩类型 （1byte）  3、序列化的方式 （1byte）  4、消息类型（普通请求，心跳检测请求）（1byte）  
 5、负载 payload（接口的名字，方法的名字，参数列表，返回值类型））

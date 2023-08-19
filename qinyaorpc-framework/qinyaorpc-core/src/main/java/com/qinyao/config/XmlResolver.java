@@ -42,7 +42,7 @@ public class XmlResolver {
             factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             
             DocumentBuilder builder = factory.newDocumentBuilder();
-            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("yrpc.xml");
+            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("qinyaorpc.xml");
             Document doc = builder.parse(inputStream);
             
             // 2、获取一个xpath解析器
