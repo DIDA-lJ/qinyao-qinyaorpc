@@ -1,22 +1,39 @@
 package com.qinyao.transport.message;
 
 /**
- *  * <pre>
- *  *   0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22
- *  *   +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
- *  *   |    magic          |ver |head  len|    full length    | qt | ser|comp|              RequestId                |
- *  *   +-----+-----+-------+----+----+----+----+-----------+----- ---+--------+----+----+----+----+----+----+---+---+
- *  *   |                                                                                                             |
- *  *   |                                         body                                                                |
- *  *   |                                                                                                             |
- *  *   +--------------------------------------------------------------------------------------------------------+---+
- *  * </pre>
+ * 自定义协议编码器
+ * <p>
+ * <pre>
+ *   0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23   24  25   26   27
+ *   +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+ *   |               magic                        |ver |head  len|    full length    |code  ser|comp|              RequestId                |
+ *   +-----+-----+--------------------------------+----+----+----+----+-----------+----- ---+--------+----+----+----+----+----+----+---+----+
+ *   |                                                                                                                                      |
+ *   |                                                   body                                                                               |
+ *   |                                                                                                                                      |
+ *   +--------------------------------------------------------------------------------------------------------------------------------------+
+ * </pre>
+ * <p>
+ * 4 Byte full length 总长度
+ * 1 Byte serialize 序列化方式
+ * 1 Byte compress 压缩类型
+ * 1 Byte requestType 请求类型
+ * 8 Byte requestId 请求 ID
+ * 9 Byte magic (魔术值) --> qinyaorpc.getBytes()
+ * 1 Byte version(版本) --> 1
+ * 2 Byte header length 首部的长度
+ * 4 Byte full length 总长度
+ * 1 Byte serialize 序列化方式
+ * 1 Byte compress 压缩类型
+ * 1 Byte requestType 请求类型
+ * 8 Byte requestId 请求 ID
+ *
  * @author LinQi
  * @createTime 2023-07-02
  */
 public class MessageFormatConstant {
     
-    public final static byte[] MAGIC = "yrpc".getBytes();
+    public final static byte[] MAGIC = "qinyaorpc".getBytes();
     public final static byte VERSION = 1;
     
     // 头部信息的长度

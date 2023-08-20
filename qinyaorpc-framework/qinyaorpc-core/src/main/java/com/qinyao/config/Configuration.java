@@ -64,7 +64,7 @@ public class Configuration {
         XmlResolver xmlResolver = new XmlResolver();
         xmlResolver.loadFromXml(this);
         
-        // 4、编程配置项，yrpcBootstrap提供
+        // 4、编程配置项，QinYaorpcBootstrap提供
     }
     
     public static void main(String[] args) {
