@@ -2,7 +2,7 @@ package com.qinyao.compress;
 
 /**
  * @author LinQi
- * @createTime 2023-07-05
+ * @createTime 2023-08-05
  */
 public interface Compressor {
     

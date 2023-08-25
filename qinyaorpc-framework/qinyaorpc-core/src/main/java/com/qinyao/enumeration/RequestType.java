@@ -4,7 +4,7 @@ package com.qinyao.enumeration;
  * 用来标记请求类型
  *
  * @author LinQi
- * @createTime 2023-07-03
+ * @createTime 2023-08-03
  */
 public enum RequestType {
     

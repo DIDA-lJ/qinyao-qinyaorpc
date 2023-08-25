@@ -10,7 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @author LinQi
- * @createTime 2023-07-02
+ * @createTime 2023-08-02
  */
 public class ConsumerChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override

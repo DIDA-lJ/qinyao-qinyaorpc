@@ -2,7 +2,7 @@ package com.qinyao.exceptions;
 
 /**
  * @author LinQi
- * @createTime 2023-07-25
+ * @createTime 2023-08-25
  */
 public class ResponseException extends RuntimeException {
     

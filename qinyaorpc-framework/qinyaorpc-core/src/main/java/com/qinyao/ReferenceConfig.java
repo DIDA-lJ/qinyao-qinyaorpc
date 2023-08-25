@@ -9,7 +9,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * @author LinQi
- * @createTime 2023-07-29
+ * @createTime 2023-08-29
  */
 @Slf4j
 public class ReferenceConfig<T> {

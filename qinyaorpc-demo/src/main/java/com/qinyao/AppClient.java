@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author LinQi
- * @createTime 2023-07-11
+ * @createTime 2023-08-11
  */
 public class AppClient implements Serializable {
 

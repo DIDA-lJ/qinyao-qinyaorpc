@@ -9,7 +9,7 @@ import java.util.List;
  * 思考注册中心，应该具有什么样的能力
  *
  * @author LinQi
- * @createTime 2023-07-30
+ * @createTime 2023-08-30
  */
 public interface Registry {
     

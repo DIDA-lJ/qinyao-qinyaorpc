@@ -5,7 +5,7 @@ import com.qinyao.annotation.QinYaorpcApi;
 
 /**
  * @author LinQi
- * @createTime 2023-07-27
+ * @createTime 2023-08-27
  */
 @QinYaorpcApi(group = "primary")
 public class HelloQinYaorpcImpl implements HelloQinYaorpc {

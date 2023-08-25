@@ -13,7 +13,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * 使用gzip算法进行压缩的具体实现
  * @author LinQi
- * @createTime 2023-07-05
+ * @createTime 2023-08-05
  */
 @Slf4j
 public class GzipCompressor implements Compressor {

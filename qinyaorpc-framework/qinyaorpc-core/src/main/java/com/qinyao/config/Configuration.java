@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 全局的配置类，代码配置-->xml配置-->默认项
  *
  * @author LinQi
- * @createTime 2023-07-11
+ * @createTime 2023-08-11
  */
 @Data
 @Slf4j

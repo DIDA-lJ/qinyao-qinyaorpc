@@ -7,7 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @author LinQi
- * @createTime 2023-07-01
+ * @createTime 2023-08-01
  */
 public class MyCompletableFuture {
     

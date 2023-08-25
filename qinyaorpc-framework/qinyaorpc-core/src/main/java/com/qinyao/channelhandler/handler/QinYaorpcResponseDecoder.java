@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
  * 基于长度字段的帧解码器
  *
  * @author LinQi
- * @createTime 2023-07-03
+ * @createTime 2023-08-03
  */
 @Slf4j
 public class QinYaorpcResponseDecoder extends LengthFieldBasedFrameDecoder {

@@ -4,7 +4,7 @@ package com.qinyao.serialize;
  * 序列化器
  *
  * @author LinQi
- * @createTime 2023-07-04
+ * @createTime 2023-08-04
  */
 public interface Serializer {
     

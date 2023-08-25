@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
  * 这是一个用来测试的类
  *
  * @author LinQi
- * @createTime 2023-07-02
+ * @createTime 2023-08-02
  */
 @Slf4j
 public class MySimpleChannelInboundHandler extends SimpleChannelInboundHandler<QinYaorpcResponse> {

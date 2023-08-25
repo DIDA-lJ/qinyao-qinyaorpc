@@ -45,7 +45,7 @@ import java.util.Random;
  * 8 Byte requestId 请求 ID
  *
  * @author LinQi
- * @createTime 2023-07-03
+ * @createTime 2023-08-03
  */
 @Slf4j
 public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
@@ -64,6 +64,13 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
                 0);
     }
 
+    /**
+     * 进行解码
+     * @param ctx
+     * @param in
+     * @return
+     * @throws Exception
+     */
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
 
@@ -76,6 +83,11 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         return null;
     }
 
+    /**
+     * 解析报文
+     * @param byteBuf
+     * @return
+     */
     private Object decodeFrame(ByteBuf byteBuf) {
         // 1、解析魔数
         byte[] magic = new byte[MessageFormatConstant.MAGIC.length];
@@ -115,16 +127,16 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         long timeStamp = byteBuf.readLong();
 
         // 我们需要封装
-        QinYaorpcRequest yrpcRequest = new QinYaorpcRequest();
-        yrpcRequest.setRequestType(requestType);
-        yrpcRequest.setCompressType(compressType);
-        yrpcRequest.setSerializeType(serializeType);
-        yrpcRequest.setRequestId(requestId);
-        yrpcRequest.setTimeStamp(timeStamp);
+        QinYaorpcRequest qinYaorpcRequest = new QinYaorpcRequest();
+        qinYaorpcRequest.setRequestType(requestType);
+        qinYaorpcRequest.setCompressType(compressType);
+        qinYaorpcRequest.setSerializeType(serializeType);
+        qinYaorpcRequest.setRequestId(requestId);
+        qinYaorpcRequest.setTimeStamp(timeStamp);
 
         // 心跳请求没有负载，此处可以判断并直接返回
         if (requestType == RequestType.HEART_BEAT.getId()) {
-            return yrpcRequest;
+            return qinYaorpcRequest;
         }
 
         int payloadLength = fullLength - headLength;
@@ -138,16 +150,17 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
             payload = compressor.decompress(payload);
 
 
-            // 2、反序列化
+            // 2、反序列化，采用序列化工厂的方式进行序列化
             Serializer serializer = SerializerFactory.getSerializer(serializeType).getImpl();
             RequestPayload requestPayload = serializer.deserialize(payload, RequestPayload.class);
-            yrpcRequest.setRequestPayload(requestPayload);
+            qinYaorpcRequest.setRequestPayload(requestPayload);
+            // 3.这里没有实现关流操作，因为需要实现复用的逻辑，这里就没有实现关流了
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("请求【{}】已经在服务端完成解码工作。", yrpcRequest.getRequestId());
+            log.debug("请求【{}】已经在服务端完成解码工作。", qinYaorpcRequest.getRequestId());
         }
 
-        return yrpcRequest;
+        return qinYaorpcRequest;
     }
 }

@@ -2,7 +2,7 @@ package com.qinyao.core;
 
 /**
  * @author LinQi
- * @createTime 2023-07-29
+ * @createTime 2023-08-29
  */
 public class QinYaorpcShutdownHook extends Thread {
     

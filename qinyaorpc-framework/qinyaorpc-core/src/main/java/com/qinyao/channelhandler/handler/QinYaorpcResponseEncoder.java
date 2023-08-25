@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * 出站时，第一个经过的处理器
  * @author LinQi
- * @createTime 2023-07-02
+ * @createTime 2023-08-02
  */
 @Slf4j
 public class QinYaorpcResponseEncoder extends MessageToByteEncoder<QinYaorpcResponse> {

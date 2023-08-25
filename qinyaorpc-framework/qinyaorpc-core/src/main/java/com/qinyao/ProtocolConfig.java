@@ -2,7 +2,7 @@ package com.qinyao;
 
 /**
  * @author LinQi
- * @createTime 2023-07-28
+ * @createTime 2023-08-28
  */
 public class ProtocolConfig {
     private String protocolName;

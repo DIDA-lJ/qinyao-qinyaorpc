@@ -7,11 +7,11 @@ import com.qinyao.exceptions.DiscoveryException;
 
 /**
  * @author LinQi
- * @createTime 2023-07-28
+ * @createTime 2023-08-28
  */
 public class RegistryConfig {
     
-    // 定义连接的 url zookeeper://127.0.0.1:2181  redis://192.168.12.125:3307
+    // 定义连接的 url zookeeper://127.0.0.1:2181  redis://192.168.12.125:3308
     private final String connectString;
     
     public RegistryConfig(String connectString) {

@@ -8,7 +8,7 @@ package com.qinyao.enumeration;
  * 错误码（服务端错误）  50（请求的方法不存在）
 
  * @author LinQi
- * @createTime 2023-07-03
+ * @createTime 2023-08-03
  */
 public enum RespCode {
     

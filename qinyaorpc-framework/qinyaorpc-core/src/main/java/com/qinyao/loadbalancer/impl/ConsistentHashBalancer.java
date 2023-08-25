@@ -16,7 +16,7 @@ import java.util.TreeMap;
 /**
  * 一致性hash的负载均衡策略
  * @author LinQi
- * @createTime 2023-07-07
+ * @createTime 2023-08-08
  */
 @Slf4j
 public class ConsistentHashBalancer extends AbstractLoadBalancer {

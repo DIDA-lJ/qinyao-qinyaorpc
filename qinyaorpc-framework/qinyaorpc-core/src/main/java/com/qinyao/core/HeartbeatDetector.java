@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException;
  * 心跳探测的核心目的是什么？探活，感知哪些服务器的连接状态是正常的，哪些是不正常的
  *
  * @author LinQi
- * @createTime 2023-07-07
+ * @createTime 2023-08-08
  */
 @Slf4j
 public class HeartbeatDetector {
