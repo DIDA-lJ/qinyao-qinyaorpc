@@ -18,6 +18,7 @@ public class JdkSerializer implements Serializer {
             return null;
         }
         
+        // 为了避免关流，将流的定义写在 try 里面，这样便可以实现自动关流
         try (
             // 将流的定义写在这里会自动关闭，不需要在写finally
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -38,9 +39,11 @@ public class JdkSerializer implements Serializer {
     
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
+        // 非空校验，避免空指针异常，直接返回一个空的字节数组，不对其进行处理
         if(bytes == null || clazz == null){
             return null;
         }
+        // 为了避免关流，将流的定义写在 try 里面，这样便可以实现自动关流
         try (
             // 将流的定义写在这里会自动关闭，不需要在写finally
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes);

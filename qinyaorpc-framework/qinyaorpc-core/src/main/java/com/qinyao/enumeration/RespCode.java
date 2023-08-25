@@ -18,8 +18,13 @@ public enum RespCode {
     RESOURCE_NOT_FOUND((byte)44,"请求的资源不存在" ),
     FAIL((byte)50,"调用方法发生异常"),
     BECOLSING((byte)51,"调用方法发生异常");
-    
+    /**
+     * 响应码
+     */
     private byte code;
+    /**
+     * 响应描述
+     */
     private String desc;
     
     RespCode(byte code, String desc) {

@@ -21,7 +21,7 @@ import java.util.Random;
  * <pre>
  *   0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23   24  25   26   27
  *   +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
- *   |               magic                        |ver |head  len|    full length    |code  ser|comp|              RequestId                |
+ *   |               magic                        |ver |head  len|    full length    |qt    ser|comp|              RequestId                |
  *   +-----+-----+--------------------------------+----+----+----+----+-----------+----- ---+--------+----+----+----+----+----+----+---+----+
  *   |                                                                                                                                      |
  *   |                                                   body                                                                               |
@@ -77,9 +77,12 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         Thread.sleep(new Random().nextInt(50));
 
         Object decode = super.decode(ctx, in);
+        // 判断 decode 属不属于 byteBuf 的子类(这里使用了 JDK 17 的新语法)
         if (decode instanceof ByteBuf byteBuf) {
+            // 解析我们的报文
             return decodeFrame(byteBuf);
         }
+        // 抛异常也可以，返回空值也可以
         return null;
     }
 
@@ -89,20 +92,22 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
      * @return
      */
     private Object decodeFrame(ByteBuf byteBuf) {
-        // 1、解析魔数
+        // 1、解析魔数 (qinyaorpc)
         byte[] magic = new byte[MessageFormatConstant.MAGIC.length];
         byteBuf.readBytes(magic);
-        // 检测魔数是否匹配
+        // 检测魔数是否匹配,将 Magic 循环遍历就可以了。
         for (int i = 0; i < magic.length; i++) {
+            // 如果两个的魔数值有一个不相等，这不进行判断，直接抛异常
             if (magic[i] != MessageFormatConstant.MAGIC[i]) {
-                throw new RuntimeException("The request obtained is not legitimate。");
+                throw new RuntimeException("Magic value mismatch error : The request obtained is not legitimate。");
             }
         }
 
         // 2、解析版本号
         byte version = byteBuf.readByte();
+        // 高版本兼容低版本，解析的版本不能比当前的解析版本大
         if (version > MessageFormatConstant.VERSION) {
-            throw new RuntimeException("获得的请求版本不被支持。");
+            throw new RuntimeException("Version Not Supported Error : The requested version is not supported.");
         }
 
         // 3、解析头部的长度
@@ -111,22 +116,22 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         // 4、解析总长度
         int fullLength = byteBuf.readInt();
 
-        // 5、请求类型
+        // 5、请求类型 --> 通过判断是否是心跳检测
         byte requestType = byteBuf.readByte();
 
-        // 6、序列化类型
+        // 6、序列化类型 --> 序列化工厂进行操作
         byte serializeType = byteBuf.readByte();
 
-        // 7、压缩类型
+        // 7、压缩类型 --> 压缩工厂进行改造
         byte compressType = byteBuf.readByte();
 
-        // 8、请求id
+        // 8、请求id --> 用雪花算法生成
         long requestId = byteBuf.readLong();
 
         // 9、时间戳
         long timeStamp = byteBuf.readLong();
 
-        // 我们需要封装
+        // 我们需要封装，进行请求数据的封装
         QinYaorpcRequest qinYaorpcRequest = new QinYaorpcRequest();
         qinYaorpcRequest.setRequestType(requestType);
         qinYaorpcRequest.setCompressType(compressType);
@@ -139,12 +144,14 @@ public class QinYaorpcRequestDecoder extends LengthFieldBasedFrameDecoder {
             return qinYaorpcRequest;
         }
 
+        // 负载的长度 = 总长度 - 头部信息的长度
         int payloadLength = fullLength - headLength;
         byte[] payload = new byte[payloadLength];
+        // 将字节数据读到字节数组中
         byteBuf.readBytes(payload);
 
         // 有了字节数组之后就可以解压缩，反序列化
-        // 1、解压缩
+        // 1、解压缩，如果负载为空，则不需要反序列化
         if (payload != null && payload.length != 0) {
             Compressor compressor = CompressorFactory.getCompressor(compressType).getImpl();
             payload = compressor.decompress(payload);

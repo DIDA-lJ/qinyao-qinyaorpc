@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * <pre>
  *   0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23   24  25   26   27
  *   +----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
- *   |               magic                        |ver |head  len|    full length    |code| ser |comp|              RequestId                |
+ *   |               magic                        |ver |head  len|    full length    |qt  | ser |comp|              RequestId                |
  *   +-----+-----+--------------------------------+----+----+----+----+-----------+----- ---+--------+----+----+----+----+----+----+---+----+
  *   |                                                                                                                                      |
  *   |                                                   body                                                                               |
@@ -50,7 +50,7 @@ public class QinYaorpcRequestEncoder extends MessageToByteEncoder<QinYaorpcReque
         byteBuf.writeByte(MessageFormatConstant.VERSION);
         // 2个字节的头部的长度
         byteBuf.writeShort(MessageFormatConstant.HEADER_LENGTH);
-        // 总长度不清楚，不知道body的长度 writeIndex(写指针)，先保存当前写指针的位置
+        // 总长度不清楚，不知道body的长度 writeIndex(写指针)，先保存当前写指针的位置，这里的写指针添加的常量为 4，即总长度占用的字节
         byteBuf.writerIndex(byteBuf.writerIndex() + MessageFormatConstant.FULL_FIELD_LENGTH);
         // 3个类型 --> 请求类型、序列化类型、压缩类型
         byteBuf.writeByte(qinYaorpcRequest.getRequestType());
@@ -75,7 +75,9 @@ public class QinYaorpcRequestEncoder extends MessageToByteEncoder<QinYaorpcReque
         
         // 写入请求体（requestPayload）
         // 1、根据配置的序列化方式进行序列化
-        // 怎么实现序列化 1、工具类 耦合性很高 如果以后我想替换序列化的方式，很难
+        // 怎么实现序列化
+        // 1 ---> 工具类 耦合性很高
+        // 2 ---> 抽象，抽象出一个对应的序列化器
         byte[] body = null;
         if (qinYaorpcRequest.getRequestPayload() != null) {
             Serializer serializer = SerializerFactory.getSerializer(qinYaorpcRequest.getSerializeType()).getImpl();

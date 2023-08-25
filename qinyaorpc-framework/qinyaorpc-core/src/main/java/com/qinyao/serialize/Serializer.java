@@ -1,7 +1,7 @@
 package com.qinyao.serialize;
 
 /**
- * 序列化器
+ * 序列化器，进行解耦
  *
  * @author LinQi
  * @createTime 2023-08-04
@@ -16,7 +16,7 @@ public interface Serializer {
     byte[] serialize(Object object);
     
     /**
-     * 反序列化的方法
+     * 反序列化的方法，使用泛型，并不需要进行具体的强转
      *
      * @param bytes 待反序列化的字节数组
      * @param clazz 目标类的class对象

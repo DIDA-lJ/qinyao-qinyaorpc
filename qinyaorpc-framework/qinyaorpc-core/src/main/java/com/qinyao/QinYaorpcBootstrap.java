@@ -177,9 +177,11 @@ public class QinYaorpcBootstrap {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 是核心，我们需要添加很多入站和出站的handler
                             socketChannel.pipeline().addLast(new LoggingHandler())
+                                    // 解析请求，以及针对响应进行编码
                                     .addLast(new QinYaorpcRequestDecoder())
                                     // 根据请求进行方法调用
                                     .addLast(new MethodCallHandler())
+                                    // 针对响应进行编码
                                     .addLast(new QinYaorpcResponseEncoder())
                             ;
                         }
@@ -226,7 +228,7 @@ public class QinYaorpcBootstrap {
     public QinYaorpcBootstrap serialize(String serializeType) {
         configuration.setSerializeType(serializeType);
         if (log.isDebugEnabled()) {
-            log.debug("我们配置了使用的序列化的方式为【{}】.", serializeType);
+            log.debug("配置使用的序列化的方式为【{}】.", serializeType);
         }
         return this;
     }
@@ -234,7 +236,7 @@ public class QinYaorpcBootstrap {
     public QinYaorpcBootstrap compress(String compressType) {
         configuration.setCompressType(compressType);
         if (log.isDebugEnabled()) {
-            log.debug("我们配置了使用的压缩算法为【{}】.", compressType);
+            log.debug("配置使用的压缩算法为【{}】.", compressType);
         }
         return this;
     }

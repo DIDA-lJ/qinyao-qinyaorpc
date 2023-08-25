@@ -97,7 +97,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .build();
             
             // 创建一个请求
-            QinYaorpcRequest yrpcRequest = QinYaorpcRequest.builder()
+            QinYaorpcRequest qinyaorpcrequest = QinYaorpcRequest.builder()
                 .requestId(QinYaorpcBootstrap.getInstance().getConfiguration().getIdGenerator().getId())
                 .compressType(CompressorFactory.getCompressor(QinYaorpcBootstrap.getInstance().getConfiguration().getCompressType()).getCode())
                 .requestType(RequestType.REQUEST.getId())
@@ -107,7 +107,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .build();
             
             // 2、将请求存入本地线程，需要在合适的时候remove
-            QinYaorpcBootstrap.REQUEST_THREAD_LOCAL.set(yrpcRequest);
+            QinYaorpcBootstrap.REQUEST_THREAD_LOCAL.set(qinyaorpcrequest);
             
             // 3、发现服务，从注册中心拉取服务列表，并通过客户端负载均衡寻找一个可用的服务
             // 传入服务的名字,返回ip+端口
@@ -129,7 +129,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
             
             try {
                 // 如果断路器是打开的
-                if (yrpcRequest.getRequestType() != RequestType.HEART_BEAT.getId() && circuitBreaker.isBreak()) {
+                if (qinyaorpcrequest.getRequestType() != RequestType.HEART_BEAT.getId() && circuitBreaker.isBreak()) {
                     // 定期打开
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
@@ -176,11 +176,11 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 // 6、写出报文
                 CompletableFuture<Object> completableFuture = new CompletableFuture<>();
                 // 将 completableFuture 暴露出去
-                QinYaorpcBootstrap.PENDING_REQUEST.put(yrpcRequest.getRequestId(), completableFuture);
+                QinYaorpcBootstrap.PENDING_REQUEST.put(qinyaorpcrequest.getRequestId(), completableFuture);
                 
                 // 这里这几 writeAndFlush 写出一个请求，这个请求的实例就会进入pipeline执行出站的一系列操作
-                // 我们可以想象得到，第一个出站程序一定是将 yrpcRequest --> 二进制的报文
-                channel.writeAndFlush(yrpcRequest).addListener((ChannelFutureListener) promise -> {
+                // 我们可以想象得到，第一个出站程序一定是将 qinyaorpcrequest --> 二进制的报文
+                channel.writeAndFlush(qinyaorpcrequest).addListener((ChannelFutureListener) promise -> {
                     // 当前的promise将来返回的结果是什么，writeAndFlush的返回结果
                     // 一旦数据被写出去，这个promise也就结束了
                     // 但是我们想要的是什么？  服务端给我们的返回值，所以这里处理completableFuture是有问题的

@@ -44,7 +44,7 @@ public class MessageFormatConstant {
     /**
      * 头部信息的长度 魔术值 + 版本号 + 首部长度 + 全部长度 + 请求类型 + 序列化类型  + 压缩 + 请求 ID
      */
-    public final static short HEADER_LENGTH = (byte) (MAGIC.length + 1 + 2 + 4 + 1 + 1 + 1 + 8 );
+    public final static short HEADER_LENGTH = (byte) (MAGIC.length + 1 + 2 + 4 + 1 + 1 + 1 + 8 + 8);
     /**
      * 头部信息长度占用的字节数
      */

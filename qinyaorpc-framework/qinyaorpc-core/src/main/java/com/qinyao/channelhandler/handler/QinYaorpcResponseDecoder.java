@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  *  * 4 Byte full length 总长度
  *  * 1 Byte serialize 序列化方式
  *  * 1 Byte compress 压缩类型
- *  * 1 Byte requestType 请求类型
+ *  * 1 Byte code  响应码
  *  * 8 Byte requestId 请求 ID
  * <p>
  * 基于长度字段的帧解码器
@@ -49,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class QinYaorpcResponseDecoder extends LengthFieldBasedFrameDecoder {
+    // 响应报文解析
     public QinYaorpcResponseDecoder() {
         super(
                 // 找到当前报文的总长度，截取报文，截取出来的报文我们可以去进行解析
@@ -112,16 +113,16 @@ public class QinYaorpcResponseDecoder extends LengthFieldBasedFrameDecoder {
         long timeStamp = byteBuf.readLong();
 
         // 我们需要封装
-        QinYaorpcResponse yrpcResponse = new QinYaorpcResponse();
-        yrpcResponse.setCode(responseCode);
-        yrpcResponse.setCompressType(compressType);
-        yrpcResponse.setSerializeType(serializeType);
-        yrpcResponse.setRequestId(requestId);
-        yrpcResponse.setTimeStamp(timeStamp);
+        QinYaorpcResponse qinYaorpcResponse = new QinYaorpcResponse();
+        qinYaorpcResponse.setCode(responseCode);
+        qinYaorpcResponse.setCompressType(compressType);
+        qinYaorpcResponse.setSerializeType(serializeType);
+        qinYaorpcResponse.setRequestId(requestId);
+        qinYaorpcResponse.setTimeStamp(timeStamp);
 
         // todo 心跳请求没有负载，此处可以判断并直接返回
 //        if( requestType == RequestType.HEART_BEAT.getId()){
-//            return yrpcRequest;
+//            return qinyaorpcrequest;
 //        }
 
         int bodyLength = fullLength - headLength;
@@ -136,16 +137,16 @@ public class QinYaorpcResponseDecoder extends LengthFieldBasedFrameDecoder {
 
             // 2、反序列化
             Serializer serializer = SerializerFactory
-                    .getSerializer(yrpcResponse.getSerializeType()).getImpl();
+                    .getSerializer(qinYaorpcResponse.getSerializeType()).getImpl();
             Object body = serializer.deserialize(payload, Object.class);
-            yrpcResponse.setBody(body);
+            qinYaorpcResponse.setBody(body);
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("响应【{}】已经在调用端完成解码工作。", yrpcResponse.getRequestId());
+            log.debug("响应【{}】已经在调用端完成解码工作。", qinYaorpcResponse.getRequestId());
         }
 
-        return yrpcResponse;
+        return qinYaorpcResponse;
     }
 
     public static void main(String[] args) {

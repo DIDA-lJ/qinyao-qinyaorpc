@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 服务提供方回复的响应
+ *
  * @author LinQi
  * @createTime 2023-08-02
  */
@@ -15,19 +16,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class QinYaorpcResponse {
-    
-    // 请求的id
+
+    /**
+     * 请求的id
+     */
     private long requestId;
-    
-    // 请求的类型，压缩的类型，序列化的方式
+
+    /**
+     * 请求的类型，压缩的类型，序列化的方式
+     */
     private byte compressType;
     private byte serializeType;
-    
+
     private long timeStamp;
-    
-    // 1 成功，  2 异常
+
+    /**
+     * 响应码类型: 1 成功， 2 异常
+     */
     private byte code;
-    
-    // 具体的消息体
+
+    /**
+     * 具体的消息体
+     */
     private Object body;
 }

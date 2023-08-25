@@ -2,7 +2,7 @@
 <!DOCTYPE configuration SYSTEM "qinyaorpc-config.dtd">
 <configuration>
 
-    <port>8094</port>
+    <port>8096</port>
     <appName>yrpc-default-appName</appName>
     <registry url="zookeeper://127.0.0.1:2181"/>
 

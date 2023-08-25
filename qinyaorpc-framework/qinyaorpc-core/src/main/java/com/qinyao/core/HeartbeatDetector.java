@@ -75,7 +75,7 @@ public class HeartbeatDetector {
                     
                     long start = System.currentTimeMillis();
                     // 构建一个心跳请求
-                    QinYaorpcRequest yrpcRequest = QinYaorpcRequest.builder()
+                    QinYaorpcRequest qinyaorpcrequest = QinYaorpcRequest.builder()
                         .requestId(QinYaorpcBootstrap.getInstance().getConfiguration().getIdGenerator().getId())
                         .compressType(CompressorFactory.getCompressor(QinYaorpcBootstrap.getInstance()
                             .getConfiguration().getCompressType()).getCode())
@@ -88,9 +88,9 @@ public class HeartbeatDetector {
                     // 4、写出报文
                     CompletableFuture<Object> completableFuture = new CompletableFuture<>();
                     // 将 completableFuture 暴露出去
-                    QinYaorpcBootstrap.PENDING_REQUEST.put(yrpcRequest.getRequestId(), completableFuture);
+                    QinYaorpcBootstrap.PENDING_REQUEST.put(qinyaorpcrequest.getRequestId(), completableFuture);
                     
-                    channel.writeAndFlush(yrpcRequest).addListener((ChannelFutureListener) promise -> {
+                    channel.writeAndFlush(qinyaorpcrequest).addListener((ChannelFutureListener) promise -> {
                         if (!promise.isSuccess()) {
                             completableFuture.completeExceptionally(promise.cause());
                         }

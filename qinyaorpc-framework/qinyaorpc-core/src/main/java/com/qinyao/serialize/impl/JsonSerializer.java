@@ -8,11 +8,17 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 
 /**
+ * Json 序列化实现
  * @author LinQi
  * @createTime 2023-08-04
  */
 @Slf4j
 public class JsonSerializer implements Serializer {
+    /**
+     * Json 序列化
+     * @param object 待序列化的对象实例
+     * @return 序列化后的对象
+     */
     @Override
     public byte[] serialize(Object object) {
         if (object == null) {
@@ -26,7 +32,14 @@ public class JsonSerializer implements Serializer {
         return result;
         
     }
-    
+
+    /**
+     * JSON 反序列化
+     * @param bytes 待反序列化的字节数组
+     * @param clazz 目标类的class对象
+     * @return 字节数组
+     * @param <T>
+     */
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
         if (bytes == null || clazz == null) {
@@ -38,7 +51,11 @@ public class JsonSerializer implements Serializer {
         }
         return t;
     }
-    
+
+    /**
+     * JSON 序列化测试
+     * @param args
+     */
     public static void main(String[] args) {
         Serializer serializer = new JsonSerializer();
     

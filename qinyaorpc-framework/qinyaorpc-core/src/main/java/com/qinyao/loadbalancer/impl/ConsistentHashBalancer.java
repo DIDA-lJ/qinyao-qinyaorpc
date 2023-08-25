@@ -49,10 +49,10 @@ public class ConsistentHashBalancer extends AbstractLoadBalancer {
         public InetSocketAddress getNext() {
             // 1、hash环已经建立好了，接下来需要对请求的要素做处理我们应该选择什么要素来进行hash运算
             // 有没有办法可以获取，到具体的请求内容  --> threadLocal
-            QinYaorpcRequest yrpcRequest = QinYaorpcBootstrap.REQUEST_THREAD_LOCAL.get();
+            QinYaorpcRequest qinyaorpcrequest = QinYaorpcBootstrap.REQUEST_THREAD_LOCAL.get();
             
             // 我们想根据请求的一些特征来选择服务器  id
-            String requestId = Long.toString(yrpcRequest.getRequestId());
+            String requestId = Long.toString(qinyaorpcrequest.getRequestId());
             
             // 请求的id做hash，字符串默认的hash不太好
             int hash = hash(requestId);

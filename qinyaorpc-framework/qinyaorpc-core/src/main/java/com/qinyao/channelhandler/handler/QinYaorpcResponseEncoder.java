@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 public class QinYaorpcResponseEncoder extends MessageToByteEncoder<QinYaorpcResponse> {
     
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, QinYaorpcResponse yrpcResponse, ByteBuf byteBuf) throws Exception {
+    protected void encode(ChannelHandlerContext channelHandlerContext, QinYaorpcResponse qinYaorpcResponse, ByteBuf byteBuf) throws Exception {
         // 4个字节的魔数值
         byteBuf.writeBytes(MessageFormatConstant.MAGIC);
         // 1个字节的版本号
@@ -62,23 +62,24 @@ public class QinYaorpcResponseEncoder extends MessageToByteEncoder<QinYaorpcResp
         // 总长度不清楚，不知道body的长度 writeIndex(写指针)
         byteBuf.writerIndex(byteBuf.writerIndex() + MessageFormatConstant.FULL_FIELD_LENGTH);
         // 3个类型
-        byteBuf.writeByte(yrpcResponse.getCode());
-        byteBuf.writeByte(yrpcResponse.getSerializeType());
-        byteBuf.writeByte(yrpcResponse.getCompressType());
+        byteBuf.writeByte(qinYaorpcResponse.getCode());
+        byteBuf.writeByte(qinYaorpcResponse.getSerializeType());
+        byteBuf.writeByte(qinYaorpcResponse.getCompressType());
         // 8字节的请求id
-        byteBuf.writeLong(yrpcResponse.getRequestId());
-        byteBuf.writeLong(yrpcResponse.getTimeStamp());
+        byteBuf.writeLong(qinYaorpcResponse.getRequestId());
+        byteBuf.writeLong(qinYaorpcResponse.getTimeStamp());
         
         // 1、对响应做序列化
         byte[] body = null;
-        if(yrpcResponse.getBody() != null) {
+        // 响应体不为空，则将响应体写入
+        if(qinYaorpcResponse.getBody() != null) {
             Serializer serializer = SerializerFactory
-                .getSerializer(yrpcResponse.getSerializeType()).getImpl();
-            body = serializer.serialize(yrpcResponse.getBody());
+                .getSerializer(qinYaorpcResponse.getSerializeType()).getImpl();
+            body = serializer.serialize(qinYaorpcResponse.getBody());
     
             // 2、压缩
             Compressor compressor = CompressorFactory.getCompressor(
-                yrpcResponse.getCompressType()
+                qinYaorpcResponse.getCompressType()
             ).getImpl();
             body = compressor.compress(body);
         }
@@ -100,7 +101,7 @@ public class QinYaorpcResponseEncoder extends MessageToByteEncoder<QinYaorpcResp
         byteBuf.writerIndex(writerIndex);
     
         if(log.isDebugEnabled()){
-            log.debug("响应【{}】已经在服务端完成编码工作。",yrpcResponse.getRequestId());
+            log.debug("响应【{}】已经在服务端完成编码工作。",qinYaorpcResponse.getRequestId());
         }
         
     }

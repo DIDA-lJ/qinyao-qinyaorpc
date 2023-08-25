@@ -11,11 +11,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
+ * Hessian 序列化方式实现
  * @author LinQi
  * @createTime 2023-08-04
  */
 @Slf4j
 public class HessianSerializer implements Serializer {
+    /**
+     * Hessian 序列化
+     * @param object 待序列化的对象实例
+     * @return 字节数组
+     */
     @Override
     public byte[] serialize(Object object) {
         if (object == null) {
@@ -34,11 +40,18 @@ public class HessianSerializer implements Serializer {
             }
             return result;
         } catch (IOException e) {
-            log.error("使用hessian进行序列化对象【{}】时放生异常.",object);
+            log.error("使用hessian进行序列化对象【{}】时发生异常.",object);
             throw new SerializeException(e);
         }
     }
-    
+
+    /**
+     * 使用 Hessian 进行反序列化
+     * @param bytes 待反序列化的字节数组
+     * @param clazz 目标类的class对象
+     * @return
+     * @param <T>
+     */
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
         if(bytes == null || clazz == null){

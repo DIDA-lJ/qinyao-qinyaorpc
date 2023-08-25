@@ -22,7 +22,7 @@ public class ConsumerApplication {
         // 3、选择一个服务并建立连接
         // 4、发送请求，携带一些信息（接口名，参数列表，方法的名字），获得结果
         QinYaorpcBootstrap.getInstance()
-            .application("first-yrpc-consumer")
+            .application("first-qinyaorpc-consumer")
             .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
             .serialize("hessian")
             .compress("gzip")

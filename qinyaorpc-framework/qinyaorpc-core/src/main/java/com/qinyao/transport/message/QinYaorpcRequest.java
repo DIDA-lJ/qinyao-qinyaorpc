@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 服务调用方发起的请求内容
+ *
  * @author LinQi
  * @createTime 2023-08-02
  */
@@ -15,19 +16,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class QinYaorpcRequest {
-    
-    // 请求的id
+
+    /**
+     * 请求的id
+     */
     private long requestId;
-    
-    // 请求的类型，压缩的类型，序列化的方式
+
+    /**
+     * 请求的类型，压缩的类型，序列化的方式
+     */
     private byte requestType;
     private byte compressType;
     private byte serializeType;
-    
+
     private long timeStamp;
-    
-    // 具体的消息体
+
+    /**
+     * 具体的消息体
+     */
     private RequestPayload requestPayload;
-    
-    
+
+
 }

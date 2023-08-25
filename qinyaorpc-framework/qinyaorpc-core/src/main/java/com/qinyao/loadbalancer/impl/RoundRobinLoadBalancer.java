@@ -23,7 +23,13 @@ public class RoundRobinLoadBalancer extends AbstractLoadBalancer {
     }
     
     private static class RoundRobinSelector implements Selector{
+        /**
+         * 服务列表
+         */
         private List<InetSocketAddress> serviceList;
+        /**
+         * 游标
+         */
         private AtomicInteger index;
     
         public RoundRobinSelector(List<InetSocketAddress> serviceList) {
